@@ -1,0 +1,51 @@
+:root {
+  --clinica-primary: #0d6efd;
+  --clinica-bg: #f8f9fa;
+}
+
+body {
+  background-color: var(--clinica-bg);
+  min-height: 100vh;
+}
+
+.page-title {
+  border-left: 4px solid var(--clinica-primary);
+  padding-left: 0.75rem;
+}
+
+.table-hover tbody tr:hover {
+  cursor: pointer;
+}
+
+.card-hover {
+  transition: box-shadow 0.2s;
+}
+.card-hover:hover {
+  box-shadow: 0 4px 16px rgba(13,110,253,.15);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.sidebar {
+  min-height: calc(100vh - 56px);
+  background: #fff;
+  border-right: 1px solid #dee2e6;
+}
+
+.sidebar .nav-link {
+  color: #495057;
+  border-radius: 8px;
+  margin-bottom: 2px;
+}
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+  background-color: #e7f1ff;
+  color: var(--clinica-primary);
+}
+.sidebar .nav-link i {
+  width: 1.25rem;
+  text-align: center;
+}

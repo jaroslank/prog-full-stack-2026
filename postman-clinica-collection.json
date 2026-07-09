@@ -1,0 +1,213 @@
+{
+  "info": {
+    "name": "API Clínica - Projeto Atualizado",
+    "description": "Collection com payloads atualizados seguindo todas as regras de negócio: CPF de 11 dígitos, senha > 6 chars, agendamentos no futuro e endpoints de status.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000/api", "type": "string" },
+    { "key": "token", "value": "COLE_O_SEU_TOKEN_AQUI", "type": "string" },
+    { "key": "uuid_agendamento", "value": "uuid-do-agendamento-aqui", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. Autenticação & Cadastro",
+      "item": [
+        {
+          "name": "POST Criar Profissional (Rota Pública)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/profissionais",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Dra. Ana Médica\",\n  \"email\": \"ana@clinica.com\",\n  \"senha\": \"senha_forte123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Validação atual: E-mail deve ter formato válido e senha deve ter no mínimo 6 caracteres."
+          }
+        },
+        {
+          "name": "POST Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ana@clinica.com\",\n  \"senha\": \"senha_forte123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Pacientes",
+      "item": [
+        {
+          "name": "POST Criar Paciente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/pacientes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"telefone\": \"(51) 99999-8888\",\n  \"cpf\": \"123.456.789-10\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Validação atual: E-mail deve ser válido, CPF não pode ser duplicado e, se informado, deve possuir exatos 11 dígitos numéricos."
+          }
+        },
+        {
+          "name": "GET Listar Pacientes",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": "{{base_url}}/pacientes"
+          }
+        },
+        {
+          "name": "PUT Atualizar Paciente",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/pacientes/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva Atualizado\",\n  \"email\": \"joao.novo@email.com\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Especialidades",
+      "item": [
+        {
+          "name": "POST Criar Especialidade",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/especialidades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Cardiologia\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "GET Listar Especialidades",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": "{{base_url}}/especialidades"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Serviços",
+      "item": [
+        {
+          "name": "POST Criar Serviço",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/servicos",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Eletrocardiograma\",\n  \"preco\": 250.00,\n  \"especialidade\": { \"id\": 1 }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Validação atual: Nome e Preço são obrigatórios. O ID da especialidade vincula o serviço à ela no TypeORM."
+          }
+        },
+        {
+          "name": "GET Listar Serviços",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": "{{base_url}}/servicos"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Agendamentos",
+      "item": [
+        {
+          "name": "POST Criar Agendamento",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/agendamentos",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paciente\": { \"id\": 1 },\n  \"servicos\": [\n    { \"id\": 1 }\n  ],\n  \"dataHora\": \"2026-12-15T14:30:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Validação atual: A Data/Hora DEVE ser no futuro (maior que Date.now()), não pode ter conflito de horário para o mesmo paciente e a lista de serviços não pode estar vazia."
+          }
+        },
+        {
+          "name": "GET Listar Agendamentos",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": "{{base_url}}/agendamentos"
+          }
+        },
+        {
+          "name": "PATCH Concluir Agendamento",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PATCH",
+            "url": "{{base_url}}/agendamentos/{{uuid_agendamento}}/concluir",
+            "description": "Validação atual: Não aceita concluir um agendamento já cancelado. Substitua a variável {{uuid_agendamento}} pelo ID gerado na listagem."
+          }
+        },
+        {
+          "name": "PATCH Cancelar Agendamento",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PATCH",
+            "url": "{{base_url}}/agendamentos/{{uuid_agendamento}}/cancelar",
+            "description": "Validação atual: Não aceita cancelar um agendamento já concluído."
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Uploads (Profissional)",
+      "item": [
+        {
+          "name": "PATCH Alterar Foto de Perfil",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PATCH",
+            "url": "{{base_url}}/profissionais/1/foto",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "foto",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "description": "Endpoint configurado para receber Multipart-Form Data. No Insomnia, vá na aba Body, escolha Multipart e selecione um arquivo de imagem."
+          }
+        }
+      ]
+    }
+  ]
+}
